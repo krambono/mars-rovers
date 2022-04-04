@@ -2,7 +2,7 @@ import { IdGenerator } from '../secondary-ports/id-generator';
 import { Command } from './command';
 import { Plateau } from './plateau';
 import { Rover } from './rover';
-import { RoverPosition } from './rover-position';
+import { RoverPosition } from './position';
 
 export class MarsMission {
   private rover: Rover;

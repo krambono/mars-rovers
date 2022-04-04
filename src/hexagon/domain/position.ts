@@ -1,7 +1,10 @@
 import { Direction } from './direction';
 
-export interface RoverPosition {
+export interface Position {
   x: number;
   y: number;
+}
+
+export interface RoverPosition extends Position {
   direction: Direction;
 }

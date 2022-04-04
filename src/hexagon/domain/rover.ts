@@ -1,7 +1,7 @@
 import { IdGenerator } from '../secondary-ports/id-generator';
 import { Command } from './command';
 import { Plateau } from './plateau';
-import { RoverPosition } from './rover-position';
+import { Position, RoverPosition } from './position';
 
 export class Rover {
   private id: string;
@@ -15,21 +15,14 @@ export class Rover {
   }
 
   public execute(command: Command): void {
-    if (command === Command.LEFT) {
-      this.positions.push(this.rotateLeft());
-    }
+    const fns: Record<Command, () => RoverPosition> = {
+      LEFT: this.rotateLeft.bind(this),
+      RIGHT: this.rotateRight.bind(this),
+      FORWARD: this.moveForward.bind(this),
+      BACKWARD: this.moveBackward.bind(this)
+    };
 
-    if (command === Command.RIGHT) {
-      this.positions.push(this.rotateRight());
-    }
-
-    if (command === Command.FORWARD) {
-      this.positions.push(this.moveForward());
-    }
-
-    if (command === Command.BACKWARD) {
-      this.positions.push(this.moveBackward());
-    }
+    this.positions.push(fns[command]());
   }
 
   public rotateLeft(): RoverPosition {
@@ -41,7 +34,7 @@ export class Rover {
   }
 
   public moveForward(): RoverPosition {
-    const points: Record<string, { x: number; y: number }> = {
+    const points: Record<string, Position> = {
       NORTH: { x: 0, y: 1 },
       EAST: { x: 1, y: 0 },
       SOUTH: { x: 0, y: -1 },
@@ -58,7 +51,7 @@ export class Rover {
   }
 
   public moveBackward(): RoverPosition {
-    const points: Record<string, { x: number; y: number }> = {
+    const points: Record<string, Position> = {
       NORTH: { x: 0, y: -1 },
       EAST: { x: -1, y: 0 },
       SOUTH: { x: 0, y: 1 },
@@ -75,15 +68,15 @@ export class Rover {
     return { ...this.currentPosition, ...newPoint };
   }
 
-  public computeNewPoint(p1: { x: number; y: number }, p2: { x: number; y: number }): { x: number; y: number } {
+  private get currentPosition(): RoverPosition {
+    return this.positions.at(-1)!;
+  }
+
+  private computeNewPoint(p1: Position, p2: Position): Position {
     return { x: p1.x + p2.x, y: p1.y + p2.y };
   }
 
   public get state() {
     return { id: this.id, positions: this.positions };
-  }
-
-  private get currentPosition(): RoverPosition {
-    return this.positions.at(-1)!;
   }
 }

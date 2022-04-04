@@ -3,7 +3,7 @@ import { Command } from '../domain/command';
 import { Direction } from '../domain/direction';
 import { MarsMission } from '../domain/mars-mission';
 import { Plateau } from '../domain/plateau';
-import { RoverPosition } from '../domain/rover-position';
+import { RoverPosition } from '../domain/position';
 
 describe('Plateau exploration', () => {
   let fakeIdGenerator: FakeIdGenerator;

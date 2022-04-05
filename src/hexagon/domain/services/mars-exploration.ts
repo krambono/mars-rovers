@@ -5,10 +5,10 @@ import { RoverPosition } from '../models/position';
 import { CuriosityRoverFactory } from '../models/rover-factory';
 import { IdGenerator } from '../../secondary-ports/id-generator';
 
-export class ExplorePlateau {
+export class MarsExploration {
   public constructor(private idGenerator: IdGenerator) {}
 
-  public apply(plateau: Plateau, landingPosition: RoverPosition, commands: Command[]): MissionReport {
+  public explore(plateau: Plateau, landingPosition: RoverPosition, commands: Command[]): MissionReport {
     const roverFactory = new CuriosityRoverFactory(this.idGenerator, plateau);
     const mission = new MarsMission(this.idGenerator, roverFactory);
     mission.assignRover();

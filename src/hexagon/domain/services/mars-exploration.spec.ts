@@ -3,16 +3,16 @@ import { Command } from '../models/command';
 import { Direction } from '../models/direction';
 import { Plateau } from '../models/plateau';
 import { RoverPosition } from '../models/position';
-import { ExplorePlateau } from './explore-plateau';
+import { MarsExploration } from './mars-exploration';
 
-describe('Plateau exploration', () => {
+describe('Mars exploration', () => {
   const plateau = new Plateau({ width: 6, height: 6 });
   let fakeIdGenerator: FakeIdGenerator;
-  let explorePlateau: ExplorePlateau;
+  let marsExploration: MarsExploration;
 
   beforeEach(() => {
     fakeIdGenerator = new FakeIdGenerator();
-    explorePlateau = new ExplorePlateau(fakeIdGenerator);
+    marsExploration = new MarsExploration(fakeIdGenerator);
   });
 
   it('should have same position and direction when not receiving any command', () => {
@@ -230,7 +230,7 @@ describe('Plateau exploration', () => {
 
   function expectMissionGiveReport(commands: Command[], positions: RoverPosition[]) {
     fakeIdGenerator.reset();
-    const results = explorePlateau.apply(plateau, positions[0], commands);
+    const results = marsExploration.explore(plateau, positions[0], commands);
     expect(results).toStrictEqual({
       id: '1',
       rover: { id: '2', positions }

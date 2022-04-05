@@ -9,10 +9,10 @@ export interface RoverState {
   positions: RoverPosition[];
 }
 
-export class Rover {
-  private id: string;
-  private plateau: Plateau;
-  private positions: RoverPosition[] = [];
+export abstract class Rover {
+  protected id: string;
+  protected plateau: Plateau;
+  protected positions: RoverPosition[] = [];
 
   public constructor(idGenerator: IdGenerator, plateau: Plateau) {
     this.id = idGenerator.generateId();
@@ -23,6 +23,18 @@ export class Rover {
     this.positions.push(landingPosition);
   }
 
+  public abstract execute(command: Command): void;
+
+  public get state(): RoverState {
+    return { id: this.id, positions: this.positions };
+  }
+
+  protected get currentPosition(): RoverPosition {
+    return this.positions.at(-1)!;
+  }
+}
+
+export class CuriosityRover extends Rover {
   public execute(command: Command): void {
     const commandHandlerMapping: Record<Command, () => RoverPosition> = {
       LEFT: this.rotateLeft.bind(this),
@@ -70,13 +82,5 @@ export class Rover {
       return newPosition;
     }
     return this.currentPosition;
-  }
-
-  private get currentPosition(): RoverPosition {
-    return this.positions.at(-1)!;
-  }
-
-  public get state(): RoverState {
-    return { id: this.id, positions: this.positions };
   }
 }

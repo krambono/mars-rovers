@@ -1,13 +1,13 @@
 import { IdGenerator } from 'src/hexagon/secondary-ports/id-generator';
 
 export class FakeIdGenerator implements IdGenerator {
-  private _id: string = 'fake_id';
+  private _id: number = 1;
 
   public generateId(): string {
-    return this._id;
+    return (this._id++).toString();
   }
 
-  public set id(value: string) {
-    this._id = value;
+  public reset() {
+    this._id = 1;
   }
 }

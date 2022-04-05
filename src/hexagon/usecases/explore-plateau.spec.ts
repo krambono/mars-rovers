@@ -16,27 +16,27 @@ describe('Plateau exploration', () => {
 
   it('should have same position and direction when not receiving any command', () => {
     const commands: Command[] = [];
-    expectMissionGiveReports(commands, [new RoverPosition(0, 0, Direction.NORTH)]);
+    expectMissionGiveReport(commands, [new RoverPosition(0, 0, Direction.NORTH)]);
   });
 
   it('should rotate at left', () => {
     const commands: Command[] = [Command.LEFT];
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.NORTH),
       new RoverPosition(0, 0, Direction.WEST)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.WEST),
       new RoverPosition(0, 0, Direction.SOUTH)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.SOUTH),
       new RoverPosition(0, 0, Direction.EAST)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.EAST),
       new RoverPosition(0, 0, Direction.NORTH)
     ]);
@@ -44,22 +44,22 @@ describe('Plateau exploration', () => {
 
   it('should rotate at right', () => {
     const commands: Command[] = [Command.RIGHT];
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.NORTH),
       new RoverPosition(0, 0, Direction.EAST)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.EAST),
       new RoverPosition(0, 0, Direction.SOUTH)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.SOUTH),
       new RoverPosition(0, 0, Direction.WEST)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.WEST),
       new RoverPosition(0, 0, Direction.NORTH)
     ]);
@@ -67,22 +67,22 @@ describe('Plateau exploration', () => {
 
   it('should move forward', () => {
     const commands: Command[] = [Command.FORWARD];
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.NORTH),
       new RoverPosition(1, 2, Direction.NORTH)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.EAST),
       new RoverPosition(2, 1, Direction.EAST)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.SOUTH),
       new RoverPosition(1, 0, Direction.SOUTH)
     ]);
 
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.WEST),
       new RoverPosition(0, 1, Direction.WEST)
     ]);
@@ -90,19 +90,19 @@ describe('Plateau exploration', () => {
 
   it('should move backward', () => {
     const commands: Command[] = [Command.BACKWARD];
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.NORTH),
       new RoverPosition(1, 0, Direction.NORTH)
     ]);
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.EAST),
       new RoverPosition(0, 1, Direction.EAST)
     ]);
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.SOUTH),
       new RoverPosition(1, 2, Direction.SOUTH)
     ]);
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(1, 1, Direction.WEST),
       new RoverPosition(2, 1, Direction.WEST)
     ]);
@@ -111,22 +111,22 @@ describe('Plateau exploration', () => {
   describe('Rover is at the edge of plateau', () => {
     it('should not move forward', () => {
       const commands: Command[] = [Command.FORWARD];
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(1, 5, Direction.NORTH),
         new RoverPosition(1, 5, Direction.NORTH)
       ]);
 
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(5, 2, Direction.EAST),
         new RoverPosition(5, 2, Direction.EAST)
       ]);
 
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(3, 0, Direction.SOUTH),
         new RoverPosition(3, 0, Direction.SOUTH)
       ]);
 
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(0, 3, Direction.WEST),
         new RoverPosition(0, 3, Direction.WEST)
       ]);
@@ -134,22 +134,22 @@ describe('Plateau exploration', () => {
 
     it('should not move backward', () => {
       const commands: Command[] = [Command.BACKWARD];
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(1, 5, Direction.SOUTH),
         new RoverPosition(1, 5, Direction.SOUTH)
       ]);
 
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(5, 2, Direction.WEST),
         new RoverPosition(5, 2, Direction.WEST)
       ]);
 
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(3, 0, Direction.NORTH),
         new RoverPosition(3, 0, Direction.NORTH)
       ]);
 
-      expectMissionGiveReports(commands, [
+      expectMissionGiveReport(commands, [
         new RoverPosition(0, 3, Direction.EAST),
         new RoverPosition(0, 3, Direction.EAST)
       ]);
@@ -169,7 +169,7 @@ describe('Plateau exploration', () => {
       Command.FORWARD,
       Command.FORWARD
     ];
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(0, 0, Direction.NORTH),
       new RoverPosition(0, 0, Direction.EAST),
       new RoverPosition(1, 0, Direction.EAST),
@@ -186,7 +186,7 @@ describe('Plateau exploration', () => {
 
   it('should work work with multiple commands', () => {
     let commands: Command[] = [Command.LEFT, Command.FORWARD, Command.FORWARD, Command.LEFT];
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(4, 4, Direction.NORTH),
       new RoverPosition(4, 4, Direction.WEST),
       new RoverPosition(3, 4, Direction.WEST),
@@ -209,7 +209,7 @@ describe('Plateau exploration', () => {
       Command.BACKWARD,
       Command.BACKWARD
     ];
-    expectMissionGiveReports(commands, [
+    expectMissionGiveReport(commands, [
       new RoverPosition(3, 3, Direction.EAST),
       new RoverPosition(4, 3, Direction.EAST),
       new RoverPosition(5, 3, Direction.EAST),
@@ -227,9 +227,12 @@ describe('Plateau exploration', () => {
     ]);
   });
 
-  function expectMissionGiveReports(commands: Command[], positions: RoverPosition[]) {
-    fakeIdGenerator.id = '3036d6dd-ee39-4098-acda-f8f4bd9ccede';
+  function expectMissionGiveReport(commands: Command[], positions: RoverPosition[]) {
+    fakeIdGenerator.reset();
     const results = explorePlateau.apply(positions[0], commands);
-    expect(results).toStrictEqual({ id: '3036d6dd-ee39-4098-acda-f8f4bd9ccede', positions });
+    expect(results).toStrictEqual({
+      id: '1',
+      rover: { id: '2', positions }
+    });
   }
 });

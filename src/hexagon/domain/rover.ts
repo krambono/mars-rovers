@@ -4,6 +4,11 @@ import { Direction } from './direction';
 import { Plateau } from './plateau';
 import { Position, RoverPosition } from './position';
 
+export interface RoverState {
+  id: string;
+  positions: RoverPosition[];
+}
+
 export class Rover {
   private id: string;
   private plateau: Plateau;
@@ -71,7 +76,7 @@ export class Rover {
     return this.positions.at(-1)!;
   }
 
-  public get state(): { id: string; positions: RoverPosition[] } {
+  public get state(): RoverState {
     return { id: this.id, positions: this.positions };
   }
 }

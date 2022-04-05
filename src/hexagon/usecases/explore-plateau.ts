@@ -10,7 +10,7 @@ export class ExplorePlateau {
 
   public apply(landingPosition: RoverPosition, commands: Command[]) {
     const roverFactory = new RoverFactory(this.idGenerator, this.plateau);
-    const mission = new MarsMission(roverFactory);
+    const mission = new MarsMission(this.idGenerator, roverFactory);
     mission.assignRover();
     mission.launchRover(landingPosition);
     mission.startMission(commands);

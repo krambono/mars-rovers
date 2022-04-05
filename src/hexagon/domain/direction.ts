@@ -1,29 +1,25 @@
 import { modulo } from 'src/shared/modulo';
 
-type Cardinal = 'NORTH' | 'EAST' | 'SOUTH' | 'WEST';
+export enum Direction {
+  'NORTH' = 'NORTH',
+  'EAST' = 'EAST',
+  'SOUTH' = 'SOUTH',
+  'WEST' = 'WEST'
+}
 
-export class Direction {
-  private currentDirectionIndex: number;
+const directions: [Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST] = [
+  Direction.NORTH,
+  Direction.EAST,
+  Direction.SOUTH,
+  Direction.WEST
+];
 
-  private constructor(index: number) {
-    this.currentDirectionIndex = index;
-  }
+export function nextDirection(direction: Direction): Direction {
+  const index = directions.indexOf(direction);
+  return directions[modulo(index + 1, 4)];
+}
 
-  public next(): Direction {
-    return new Direction(modulo(this.currentDirectionIndex + 1, 4));
-  }
-
-  public prev(): Direction {
-    return new Direction(modulo(this.currentDirectionIndex - 1, 4));
-  }
-
-  public get value(): string {
-    return Direction.directions[this.currentDirectionIndex];
-  }
-
-  private static directions: [Cardinal, Cardinal, Cardinal, Cardinal] = ['NORTH', 'EAST', 'SOUTH', 'WEST'];
-  public static NORTH = new Direction(0);
-  public static EAST = new Direction(1);
-  public static SOUTH = new Direction(2);
-  public static WEST = new Direction(3);
+export function prevDirection(direction: Direction): Direction {
+  const index = directions.indexOf(direction);
+  return directions[modulo(index - 1, 4)];
 }

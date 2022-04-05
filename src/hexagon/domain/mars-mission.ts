@@ -1,26 +1,28 @@
-import { IdGenerator } from '../secondary-ports/id-generator';
 import { Command } from './command';
-import { Plateau } from './plateau';
-import { Rover } from './rover';
 import { RoverPosition } from './position';
+import { Rover } from './rover';
+import { RoverFactory } from './rover-factory';
 
 export class MarsMission {
   private rover: Rover;
 
-  public constructor(private idGenerator: IdGenerator, private plateau: Plateau) {}
+  public constructor(private roverFactory: RoverFactory) {}
 
-  public addRover(initialPosition: RoverPosition) {
-    this.rover = this.createRover(initialPosition);
+  public assignRover(): void {
+    this.rover = this.roverFactory.createRover();
   }
 
-  public startMission(commands: Command[]): { id: string; positions: RoverPosition[] } {
+  public launchRover(landingPosition: RoverPosition): void {
+    this.rover.land(landingPosition);
+  }
+
+  public startMission(commands: Command[]): void {
     for (const command of commands) {
       this.rover.execute(command);
     }
-    return this.rover.state;
   }
 
-  private createRover(initialPosition: RoverPosition): Rover {
-    return new Rover(this.idGenerator, this.plateau, initialPosition);
+  public getReport(): { id: string; positions: RoverPosition[] } {
+    return this.rover.state;
   }
 }

@@ -1,82 +1,77 @@
 import { IdGenerator } from '../secondary-ports/id-generator';
 import { Command } from './command';
+import { Direction } from './direction';
 import { Plateau } from './plateau';
 import { Position, RoverPosition } from './position';
 
 export class Rover {
   private id: string;
   private plateau: Plateau;
-  private positions: RoverPosition[];
+  private positions: RoverPosition[] = [];
 
-  public constructor(idGenerator: IdGenerator, plateau: Plateau, initialPosition: RoverPosition) {
+  public constructor(idGenerator: IdGenerator, plateau: Plateau) {
     this.id = idGenerator.generateId();
     this.plateau = plateau;
-    this.positions = [initialPosition];
+  }
+
+  public land(landingPosition: RoverPosition): void {
+    this.positions.push(landingPosition);
   }
 
   public execute(command: Command): void {
-    const fns: Record<Command, () => RoverPosition> = {
+    const commandHandlerMapping: Record<Command, () => RoverPosition> = {
       LEFT: this.rotateLeft.bind(this),
       RIGHT: this.rotateRight.bind(this),
       FORWARD: this.moveForward.bind(this),
       BACKWARD: this.moveBackward.bind(this)
     };
-
-    this.positions.push(fns[command]());
+    const newPosition = commandHandlerMapping[command]();
+    this.positions.push(newPosition);
   }
 
-  public rotateLeft(): RoverPosition {
-    return { ...this.currentPosition, direction: this.currentPosition.direction.prev() };
+  private rotateLeft(): RoverPosition {
+    return this.currentPosition.rotateLeft();
   }
 
-  public rotateRight(): RoverPosition {
-    return { ...this.currentPosition, direction: this.currentPosition.direction.next() };
+  private rotateRight(): RoverPosition {
+    return this.currentPosition.rotateRight();
   }
 
-  public moveForward(): RoverPosition {
-    const points: Record<string, Position> = {
-      NORTH: { x: 0, y: 1 },
-      EAST: { x: 1, y: 0 },
-      SOUTH: { x: 0, y: -1 },
-      WEST: { x: -1, y: 0 }
+  private moveForward(): RoverPosition {
+    const translations: Record<Direction, Position> = {
+      NORTH: new Position(0, 1),
+      EAST: new Position(1, 0),
+      SOUTH: new Position(0, -1),
+      WEST: new Position(-1, 0)
     };
-    const point = points[this.currentPosition.direction.value];
-
-    const newPoint = this.computeNewPoint(this.currentPosition, point);
-
-    if (!this.plateau.isPositionValid(newPoint)) {
-      return this.currentPosition;
-    }
-    return { ...this.currentPosition, ...newPoint };
+    return this.move(translations);
   }
 
-  public moveBackward(): RoverPosition {
-    const points: Record<string, Position> = {
-      NORTH: { x: 0, y: -1 },
-      EAST: { x: -1, y: 0 },
-      SOUTH: { x: 0, y: 1 },
-      WEST: { x: 1, y: 0 }
+  private moveBackward(): RoverPosition {
+    const translations: Record<Direction, Position> = {
+      NORTH: new Position(0, -1),
+      EAST: new Position(-1, 0),
+      SOUTH: new Position(0, 1),
+      WEST: new Position(1, 0)
     };
-    const point = points[this.currentPosition.direction.value];
+    return this.move(translations);
+  }
 
-    const newPoint = this.computeNewPoint(this.currentPosition, point);
+  private move(translations: Record<Direction, Position>): RoverPosition {
+    const translation = translations[this.currentPosition.direction];
+    const newPosition = this.currentPosition.translate(translation);
 
-    if (!this.plateau.isPositionValid(newPoint)) {
-      return this.currentPosition;
+    if (this.plateau.isPositionValid(newPosition)) {
+      return newPosition;
     }
-
-    return { ...this.currentPosition, ...newPoint };
+    return this.currentPosition;
   }
 
   private get currentPosition(): RoverPosition {
     return this.positions.at(-1)!;
   }
 
-  private computeNewPoint(p1: Position, p2: Position): Position {
-    return { x: p1.x + p2.x, y: p1.y + p2.y };
-  }
-
-  public get state() {
+  public get state(): { id: string; positions: RoverPosition[] } {
     return { id: this.id, positions: this.positions };
   }
 }

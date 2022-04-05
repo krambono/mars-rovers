@@ -105,21 +105,30 @@ describe('Rover command interpreter', () => {
 
   describe('Multiple lines', () => {
     it('should work with multiples lines', async () => {
-      fakeFileStorage.setFile({ path: 'my-file', lines: ['LRBFFFBRRLBF'] });
+      fakeFileStorage.setFile({ path: 'my-file', lines: ['FFBLRRRBLF', 'BBFFFLFRF'] });
       const commands: Command[][] = await roverCommandInterpreter.interpret('my-file');
       expect(commands).toStrictEqual([
         [
+          Command.FORWARD,
+          Command.FORWARD,
+          Command.BACKWARD,
           Command.LEFT,
           Command.RIGHT,
-          Command.BACKWARD,
-          Command.FORWARD,
-          Command.FORWARD,
-          Command.FORWARD,
-          Command.BACKWARD,
           Command.RIGHT,
           Command.RIGHT,
+          Command.BACKWARD,
           Command.LEFT,
+          Command.FORWARD
+        ],
+        [
           Command.BACKWARD,
+          Command.BACKWARD,
+          Command.FORWARD,
+          Command.FORWARD,
+          Command.FORWARD,
+          Command.LEFT,
+          Command.FORWARD,
+          Command.RIGHT,
           Command.FORWARD
         ]
       ]);

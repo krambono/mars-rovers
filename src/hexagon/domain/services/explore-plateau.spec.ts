@@ -1,8 +1,8 @@
 import { FakeIdGenerator } from 'src/adapters/secondary/fake-id-generator';
-import { Command } from '../domain/command';
-import { Direction } from '../domain/direction';
-import { Plateau } from '../domain/plateau';
-import { RoverPosition } from '../domain/position';
+import { Command } from '../models/command';
+import { Direction } from '../models/direction';
+import { Plateau } from '../models/plateau';
+import { RoverPosition } from '../models/position';
 import { ExplorePlateau } from './explore-plateau';
 
 describe('Plateau exploration', () => {

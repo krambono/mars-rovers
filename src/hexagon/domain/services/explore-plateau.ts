@@ -1,9 +1,9 @@
-import { Command } from '../domain/command';
-import { MarsMission, MissionReport } from '../domain/mars-mission';
-import { Plateau } from '../domain/plateau';
-import { RoverPosition } from '../domain/position';
-import { CuriosityRoverFactory } from '../domain/rover-factory';
-import { IdGenerator } from '../secondary-ports/id-generator';
+import { Command } from '../models/command';
+import { MarsMission, MissionReport } from '../models/mars-mission';
+import { Plateau } from '../models/plateau';
+import { RoverPosition } from '../models/position';
+import { CuriosityRoverFactory } from '../models/rover-factory';
+import { IdGenerator } from '../../secondary-ports/id-generator';
 
 export class ExplorePlateau {
   public constructor(private idGenerator: IdGenerator) {}

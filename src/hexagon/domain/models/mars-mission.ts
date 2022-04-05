@@ -1,4 +1,4 @@
-import { IdGenerator } from '../secondary-ports/id-generator';
+import { IdGenerator } from '../../secondary-ports/id-generator';
 import { Command } from './command';
 import { RoverPosition } from './position';
 import { Rover } from './rover';

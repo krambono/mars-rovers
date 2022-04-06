@@ -11,6 +11,13 @@ describe('Rover command interpreter', () => {
     roverCommandInterpreter = new RoverCommandInterpreter(fakeFileStorage);
   });
 
+  it('should raise an error if reading file failed', async () => {
+    const missingFile = 'missing-file';
+    await expect(roverCommandInterpreter.interpret(missingFile)).rejects.toThrow(
+      `Failed to read file : ${missingFile}`
+    );
+  });
+
   it('should not return any command if file is empty', async () => {
     fakeFileStorage.setFile({ path: 'my-file', lines: [] });
     const commands: Command[][] = await roverCommandInterpreter.interpret('my-file');
@@ -132,6 +139,12 @@ describe('Rover command interpreter', () => {
           Command.FORWARD
         ]
       ]);
+    });
+
+    it('should skip empty lines', async () => {
+      fakeFileStorage.setFile({ path: 'my-file', lines: ['', 'R', 'L', '', 'B', ''] });
+      const commands: Command[][] = await roverCommandInterpreter.interpret('my-file');
+      expect(commands).toStrictEqual([[Command.RIGHT], [Command.LEFT], [Command.BACKWARD]]);
     });
   });
 });

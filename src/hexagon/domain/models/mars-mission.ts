@@ -6,7 +6,7 @@ import { RoverFactory } from './rover-factory';
 
 export interface MissionReport {
   id: string;
-  rover: { id: string; positions: RoverPosition[] };
+  rover: { id: string; positions: RoverPosition[][] };
 }
 
 export class MarsMission {
@@ -25,9 +25,9 @@ export class MarsMission {
     this.rover.land(landingPosition);
   }
 
-  public startMission(commands: Command[]): void {
-    for (const command of commands) {
-      this.rover.execute(command);
+  public startMission(commandSets: Command[][]): void {
+    for (const commands of commandSets) {
+      this.rover.execute(commands);
     }
   }
 

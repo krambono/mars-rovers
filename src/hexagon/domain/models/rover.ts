@@ -6,13 +6,15 @@ import { Position, RoverPosition } from './position';
 
 export interface RoverState {
   id: string;
-  positions: RoverPosition[];
+  landingPosition: RoverPosition;
+  positions: RoverPosition[][];
 }
 
 export abstract class Rover {
   protected id: string;
   protected plateau: Plateau;
-  protected positions: RoverPosition[] = [];
+  protected landingPosition: RoverPosition;
+  protected positions: RoverPosition[][] = [];
 
   public constructor(idGenerator: IdGenerator, plateau: Plateau) {
     this.id = idGenerator.generateId();
@@ -20,22 +22,29 @@ export abstract class Rover {
   }
 
   public land(landingPosition: RoverPosition): void {
-    this.positions.push(landingPosition);
+    this.landingPosition = landingPosition;
   }
 
-  public abstract execute(command: Command): void;
+  public abstract execute(command: Command[]): void;
 
   public get state(): RoverState {
-    return { id: this.id, positions: this.positions };
+    return { id: this.id, landingPosition: this.landingPosition, positions: this.positions };
   }
 
   protected get currentPosition(): RoverPosition {
-    return this.positions.at(-1)!;
+    return this.positions.flat().at(-1) ?? this.landingPosition;
   }
 }
 
 export class CuriosityRover extends Rover {
-  public execute(command: Command): void {
+  public execute(commands: Command[]): void {
+    this.positions.push([]);
+    for (const command of commands) {
+      this.executeSingleCommand(command);
+    }
+  }
+
+  private executeSingleCommand(command: Command): void {
     const commandHandlerMapping: Record<Command, () => RoverPosition> = {
       LEFT: this.rotateLeft.bind(this),
       RIGHT: this.rotateRight.bind(this),
@@ -43,7 +52,7 @@ export class CuriosityRover extends Rover {
       BACKWARD: this.moveBackward.bind(this)
     };
     const newPosition = commandHandlerMapping[command]();
-    this.positions.push(newPosition);
+    this.positions.at(-1)!.push(newPosition);
   }
 
   private rotateLeft(): RoverPosition {

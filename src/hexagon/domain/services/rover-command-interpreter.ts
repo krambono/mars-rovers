@@ -5,8 +5,26 @@ export class RoverCommandInterpreter {
   public constructor(private fileStorage: FileStorage) {}
 
   public async interpret(filePath: string): Promise<Command[][]> {
-    const lines = await this.fileStorage.readFileLineByLine(filePath);
-    return lines.reduce((commands, line) => [...commands, this.parseLine(line)], [] as Command[][]);
+    const lines = await this.retrieveFileLines(filePath);
+    return this.transformLinesIntoCommands(lines);
+  }
+
+  private async retrieveFileLines(filePath: string): Promise<string[]> {
+    try {
+      return await this.fileStorage.readFileLineByLine(filePath);
+    } catch (e) {
+      throw new Error(`Failed to read file : ${filePath}`);
+    }
+  }
+
+  private transformLinesIntoCommands(lines: string[]): Command[][] {
+    return lines.reduce((commandsSets, line) => {
+      const commands = this.parseLine(line);
+      if (commands.length) {
+        commandsSets.push(commands);
+      }
+      return commandsSets;
+    }, [] as Command[][]);
   }
 
   private parseLine(line: string): Command[] {
@@ -18,6 +36,7 @@ export class RoverCommandInterpreter {
       B: Command.BACKWARD
     };
     const knownCommands = ['R', 'L', 'F', 'B'];
+
     for (const c of line) {
       if (c === ' ' || c === '\t') {
         continue;

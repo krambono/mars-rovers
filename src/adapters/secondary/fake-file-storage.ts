@@ -9,7 +9,11 @@ export class FakeFileStorage implements FileStorage {
   private files: Record<string, File> = {};
 
   public async readFileLineByLine(filePath: string): Promise<string[]> {
-    return this.files[filePath].lines;
+    const lines = this.files[filePath]?.lines;
+    if (!lines) {
+      throw new Error('File does not exist');
+    }
+    return lines;
   }
 
   public setFile(file: File) {

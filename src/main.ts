@@ -1,12 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { CLI } from './adapters/primary/cli';
-import { AppModule } from './app.module';
+import { ApiModule } from './api.module';
 
 async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(AppModule);
-  const cli = app.get(CLI);
-  await cli.execute('data.txt');
-  await app.close();
+  const app = await NestFactory.create(ApiModule);
+  app.listen(3000);
 }
 
 bootstrap();

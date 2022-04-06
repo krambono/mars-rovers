@@ -25,7 +25,7 @@ export abstract class Rover {
     this.landingPosition = landingPosition;
   }
 
-  public abstract execute(command: Command[]): void;
+  public abstract execute(commands: Command[]): void;
 
   public get state(): RoverState {
     return { id: this.id, landingPosition: this.landingPosition, positions: this.positions };

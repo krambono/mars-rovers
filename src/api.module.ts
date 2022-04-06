@@ -1,32 +1,33 @@
 import { Module } from '@nestjs/common';
-import { HDDFileStorage } from './adapters/secondary/hdd-file-storage';
-import { UUIDGenerator } from './adapters/secondary/uuid-generator';
-import { RoverCommandInterpreter } from './hexagon/domain/services/rover-command-interpreter';
-import { FileStorage } from './hexagon/secondary-ports/file-storage';
+import { MarsExplorationController } from './adapters/primary/mars-exploration-controller';
+import { CommonModule } from './common.module';
+import { RoverPosition } from './hexagon/domain/models/position';
+import { RoverFactory } from './hexagon/domain/models/rover-factory';
 import { IdGenerator } from './hexagon/secondary-ports/id-generator';
 import { MissionReportHandler } from './hexagon/secondary-ports/mission-report-handler';
 import { ExploreMars } from './hexagon/usecases/explore-mars';
 
 @Module({
-  imports: [],
-  controllers: [],
+  imports: [CommonModule],
+  controllers: [MarsExplorationController],
   providers: [
     {
       provide: ExploreMars,
-      useFactory: (idGenerator: IdGenerator, missionReportHandler: MissionReportHandler) =>
-        new ExploreMars(idGenerator, missionReportHandler),
-      inject: ['ID_GENERATOR', 'MISSION_REPORT_HANDLER']
+      useFactory: (
+        idGenerator: IdGenerator,
+        missionReportHandler: MissionReportHandler,
+        roverFactory: RoverFactory,
+        landingPosition: RoverPosition
+      ) => new ExploreMars(idGenerator, missionReportHandler, roverFactory, landingPosition),
+      inject: ['ID_GENERATOR', 'MISSION_REPORT_HANDLER', 'ROVER_FACTORY', 'LANDING_POSITION']
     },
-    {
-      provide: RoverCommandInterpreter,
-      useFactory: (fileStorage: FileStorage) => new RoverCommandInterpreter(fileStorage),
-      inject: ['FILE_STORAGE']
-    },
-    { provide: 'ID_GENERATOR', useClass: UUIDGenerator },
-    { provide: 'FILE_STORAGE', useClass: HDDFileStorage },
     {
       provide: 'MISSION_REPORT_HANDLER',
-      useFactory: () => null,
+      useFactory: () => ({
+        handle: async report => {
+          console.log(report);
+        }
+      }),
       inject: []
     }
   ]

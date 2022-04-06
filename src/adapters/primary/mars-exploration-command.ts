@@ -1,8 +1,5 @@
 import * as chalk from 'chalk';
 import { Command, CommandRunner } from 'nest-commander';
-import { Direction } from 'src/hexagon/domain/models/direction';
-import { Plateau } from 'src/hexagon/domain/models/plateau';
-import { RoverPosition } from 'src/hexagon/domain/models/position';
 import { RoverCommandInterpreter } from 'src/hexagon/domain/services/rover-command-interpreter';
 import { ExploreMars } from 'src/hexagon/usecases/explore-mars';
 
@@ -25,9 +22,7 @@ export class MarsExplorationCommand implements CommandRunner {
   }
 
   private async execute(filePath: string) {
-    const plateau: Plateau = new Plateau({ width: 5, height: 5 });
-    const landingPosition = new RoverPosition(0, 0, Direction.NORTH);
-    const commandsSets = await this.roverCommandInterpreter.interpret(filePath);
-    await this.exploreMars.apply(plateau, landingPosition, commandsSets);
+    const commands = await this.roverCommandInterpreter.interpret(filePath);
+    await this.exploreMars.apply(commands);
   }
 }

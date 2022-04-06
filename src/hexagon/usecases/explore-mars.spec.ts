@@ -4,18 +4,19 @@ import { Command } from '../domain/models/command';
 import { Direction } from '../domain/models/direction';
 import { Plateau } from '../domain/models/plateau';
 import { RoverPosition } from '../domain/models/position';
+import { CuriosityRoverFactory } from '../domain/models/rover-factory';
 import { ExploreMars } from './explore-mars';
 
 describe('Mars exploration', () => {
-  const plateau = new Plateau({ width: 6, height: 6 });
   let fakeIdGenerator: FakeIdGenerator;
   let fakeMissionReportHandler: FakeMissionReportHandler;
   let exploreMars: ExploreMars;
+  let curiosityRoverFactory: CuriosityRoverFactory;
 
   beforeEach(() => {
     fakeIdGenerator = new FakeIdGenerator();
     fakeMissionReportHandler = new FakeMissionReportHandler();
-    exploreMars = new ExploreMars(fakeIdGenerator, fakeMissionReportHandler);
+    curiosityRoverFactory = new CuriosityRoverFactory(fakeIdGenerator, new Plateau({ width: 6, height: 6 }));
   });
 
   it('should have same position and direction when not receiving any command', async () => {
@@ -254,7 +255,8 @@ describe('Mars exploration', () => {
     positions: RoverPosition[][]
   ) {
     fakeIdGenerator.reset();
-    await exploreMars.apply(plateau, landingPosition, commandSets);
+    exploreMars = new ExploreMars(fakeIdGenerator, fakeMissionReportHandler, curiosityRoverFactory, landingPosition);
+    await exploreMars.apply(commandSets);
     const results = fakeMissionReportHandler.getReport();
     expect(results).toStrictEqual({
       id: '1',

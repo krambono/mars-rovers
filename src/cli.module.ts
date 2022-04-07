@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { MarsExplorationCommand } from './adapters/primary/cli-commands/mars-exploration-command';
-import { HDDFileStorage } from './adapters/secondary/hdd-file-storage';
-import { MissionReportLogger } from './adapters/secondary/mission-report-logger/mission-report-logger';
-import { Logger } from './adapters/secondary/mission-report-logger/secondary-ports/logger';
+import { MarsExplorationCommand } from './write/adapters/primary/cli-commands/mars-exploration-command';
+import { HDDFileStorage } from './write/adapters/secondary/hdd-file-storage';
+import { MissionReportLogger } from './write/adapters/secondary/mission-report-logger/mission-report-logger';
+import { Logger } from './write/adapters/secondary/mission-report-logger/secondary-ports/logger';
 import { CommonModule } from './common.module';
-import { RoverPosition } from './hexagon/domain/models/position';
-import { RoverFactory } from './hexagon/domain/models/rover-factory';
-import { RoverCommandInterpreter } from './adapters/primary/cli-commands/rover-command-interpreter';
-import { FileStorage } from './hexagon/secondary-ports/file-storage';
-import { IdGenerator } from './hexagon/secondary-ports/id-generator';
-import { MissionReportHandler } from './hexagon/secondary-ports/mission-report-handler';
-import { ExploreMars } from './hexagon/usecases/explore-mars';
+import { RoverPosition } from './write/hexagon/domain/models/position';
+import { RoverFactory } from './write/hexagon/domain/models/rover-factory';
+import { RoverCommandInterpreter } from './write/adapters/primary/cli-commands/rover-command-interpreter';
+import { FileStorage } from './write/hexagon/secondary-ports/file-storage';
+import { IdGenerator } from './write/hexagon/secondary-ports/id-generator';
+import { MissionReportHandler } from './write/hexagon/secondary-ports/mission-report-handler';
+import { ExploreMars } from './write/hexagon/use-cases/explore-mars';
 
 @Module({
   imports: [CommonModule],

@@ -1,26 +1,22 @@
 import { Module } from '@nestjs/common';
-import { MarsExplorationController } from './adapters/primary/controllers/mars-exploration-controller';
-import { MissionReportController } from './adapters/primary/controllers/read/mission-reports.controller';
-import { InMemoryMissionReportRepository } from './adapters/secondary/mission-report-storage/adapters/in-memory-mission-report-repository';
-import { MissionReportStorage } from './adapters/secondary/mission-report-storage/mission-report-storage';
-import { MissionReportRepository } from './adapters/secondary/mission-report-storage/secondary-ports/mission-report-repository';
-import { InMemoryMissionReportQuery } from './adapters/secondary/read/in-memory-mission-report-query';
+import { MarsExplorationController } from './write/adapters/primary/controllers/mars-exploration-controller';
+import { MissionReportController } from './read/adapters/primary/mission-reports.controller';
+import { InMemoryMissionReportRepository } from './write/adapters/secondary/mission-report-storage/adapters/in-memory-mission-report-repository';
+import { MissionReportStorage } from './write/adapters/secondary/mission-report-storage/mission-report-storage';
+import { MissionReportRepository } from './write/adapters/secondary/mission-report-storage/secondary-ports/mission-report-repository';
 import { CommonModule } from './common.module';
-import { RoverPosition } from './hexagon/domain/models/position';
-import { RoverFactory } from './hexagon/domain/models/rover-factory';
-import { IdGenerator } from './hexagon/secondary-ports/id-generator';
-import { MissionReportHandler } from './hexagon/secondary-ports/mission-report-handler';
-import { MissionReportQuery } from './hexagon/secondary-ports/read/mission-report-query';
-import { ExploreMars } from './hexagon/usecases/explore-mars';
-import { RetrieveMissionReports } from './hexagon/usecases/retrieve-mission-reports';
+import { RoverPosition } from './write/hexagon/domain/models/position';
+import { RoverFactory } from './write/hexagon/domain/models/rover-factory';
+import { IdGenerator } from './write/hexagon/secondary-ports/id-generator';
+import { MissionReportHandler } from './write/hexagon/secondary-ports/mission-report-handler';
+import { MissionReportQuery } from './read/hexagon/secondary-ports/mission-report-query';
+import { ExploreMars } from './write/hexagon/use-cases/explore-mars';
+import { RetrieveMissionReports } from './read/hexagon/use-cases/retrieve-mission-reports';
+import { InMemoryMissionReportQuery } from './read/adapters/secondary/in-memory-mission-report-query';
 
 @Module({
   imports: [CommonModule],
-  controllers: [
-    MarsExplorationController,
-    //
-    MissionReportController
-  ],
+  controllers: [MarsExplorationController, MissionReportController],
   providers: [
     {
       provide: ExploreMars,
@@ -42,8 +38,6 @@ import { RetrieveMissionReports } from './hexagon/usecases/retrieve-mission-repo
       provide: 'MISSION_REPORT_REPOSITORY',
       useClass: InMemoryMissionReportRepository
     },
-
-    //
 
     {
       provide: RetrieveMissionReports,

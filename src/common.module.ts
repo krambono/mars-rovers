@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UUIDGenerator } from './adapters/secondary/uuid-generator';
-import { Direction } from './hexagon/domain/models/direction';
-import { Plateau } from './hexagon/domain/models/plateau';
-import { RoverPosition } from './hexagon/domain/models/position';
-import { CuriosityRoverFactory } from './hexagon/domain/models/rover-factory';
-import { IdGenerator } from './hexagon/secondary-ports/id-generator';
+import { UUIDGenerator } from './write/adapters/secondary/uuid-generator';
+import { Direction } from './write/hexagon/domain/models/direction';
+import { Plateau } from './write/hexagon/domain/models/plateau';
+import { RoverPosition } from './write/hexagon/domain/models/position';
+import { CuriosityRoverFactory } from './write/hexagon/domain/models/rover-factory';
+import { IdGenerator } from './write/hexagon/secondary-ports/id-generator';
 
 @Module({
   providers: [

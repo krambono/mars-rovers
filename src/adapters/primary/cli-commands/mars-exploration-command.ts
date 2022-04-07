@@ -1,7 +1,7 @@
 import * as chalk from 'chalk';
 import { Command, CommandRunner } from 'nest-commander';
-import { RoverCommandInterpreter } from 'src/hexagon/domain/services/rover-command-interpreter';
 import { ExploreMars } from 'src/hexagon/usecases/explore-mars';
+import { RoverCommandInterpreter } from './rover-command-interpreter';
 
 @Command({
   name: 'mars-mission',

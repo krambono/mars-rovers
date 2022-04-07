@@ -18,6 +18,7 @@ export class ExploreMars {
     mission.assignRover();
     mission.launchRover(this.landingPosition);
     mission.startMission(commands);
-    await this.missionReportHandler.handle(mission.getReport());
+    const report = mission.getReport();
+    await this.missionReportHandler.handle(report);
   }
 }

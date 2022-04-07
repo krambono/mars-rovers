@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MarsExplorationController } from './adapters/primary/mars-exploration-controller';
+import { MarsExplorationController } from './adapters/primary/controllers/mars-exploration-controller';
 import { CommonModule } from './common.module';
 import { RoverPosition } from './hexagon/domain/models/position';
 import { RoverFactory } from './hexagon/domain/models/rover-factory';

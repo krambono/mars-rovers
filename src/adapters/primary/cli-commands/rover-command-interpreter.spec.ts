@@ -1,5 +1,5 @@
 import { FakeFileStorage } from 'src/adapters/secondary/fake-file-storage';
-import { Command } from '../models/command';
+import { Command } from 'src/hexagon/domain/models/command';
 import { RoverCommandInterpreter } from './rover-command-interpreter';
 
 describe('Rover command interpreter', () => {

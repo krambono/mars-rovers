@@ -1,5 +1,5 @@
 import { FileStorage } from 'src/hexagon/secondary-ports/file-storage';
-import { Command } from '../models/command';
+import { Command } from '../../../hexagon/domain/models/command';
 
 export class RoverCommandInterpreter {
   public constructor(private fileStorage: FileStorage) {}
@@ -35,16 +35,16 @@ export class RoverCommandInterpreter {
       F: Command.FORWARD,
       B: Command.BACKWARD
     };
-    const knownCommands = ['R', 'L', 'F', 'B'];
+    const validCommands = ['R', 'L', 'F', 'B'];
 
-    for (const c of line) {
-      if (c === ' ' || c === '\t') {
+    for (const character of line) {
+      if (character === ' ' || character === '\t') {
         continue;
       }
-      if (knownCommands.includes(c)) {
-        commands.push(commandsCharacterMapping[c]);
+      if (validCommands.includes(character)) {
+        commands.push(commandsCharacterMapping[character]);
       } else {
-        throw Error(`Unknown command : ${c}`);
+        throw Error(`Unknown command : ${character}`);
       }
     }
 

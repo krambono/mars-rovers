@@ -6,7 +6,7 @@ import { RoverFactory } from './rover-factory';
 
 export interface MissionReport {
   id: string;
-  rover: { id: string; positions: RoverPosition[][] };
+  rover: { id: string; landingPosition: RoverPosition; positions: RoverPosition[][] };
 }
 
 export class MarsMission {

@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MarsExplorationController } from './adapters/primary/controllers/mars-exploration-controller';
+import { inMemoryMissionReportRepository } from './adapters/secondary/mission-report-storage/adapters/in-memory-mission-report-repository';
+import { MissionReportStorage } from './adapters/secondary/mission-report-storage/mission-report-storage';
+import { MissionReportRepository } from './adapters/secondary/mission-report-storage/secondary-ports/mission-report-repository';
 import { CommonModule } from './common.module';
 import { RoverPosition } from './hexagon/domain/models/position';
 import { RoverFactory } from './hexagon/domain/models/rover-factory';
@@ -23,12 +26,13 @@ import { ExploreMars } from './hexagon/usecases/explore-mars';
     },
     {
       provide: 'MISSION_REPORT_HANDLER',
-      useFactory: () => ({
-        handle: async report => {
-          console.log(report);
-        }
-      }),
-      inject: []
+      useFactory: (missionReportRepository: MissionReportRepository) =>
+        new MissionReportStorage(missionReportRepository),
+      inject: ['MISSION_REPORT_REPOSITORY']
+    },
+    {
+      provide: 'MISSION_REPORT_REPOSITORY',
+      useClass: inMemoryMissionReportRepository
     }
   ]
 })
